@@ -1,0 +1,7 @@
+alias ll='ls -l'
+alias lt='ls -ltr'
+alias la='ls -la'
+
+alias cp='cp -i'
+alias rm='rm -i'
+alias mkdir='mkdir -p'
