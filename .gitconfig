@@ -1,0 +1,41 @@
+[user]
+    name = gactocat
+    email = gactocat@gmail.com
+
+[core]
+    excludesfile = ~/.gitignore
+    editor = vim
+    quotepath = false
+
+[color]
+    ui = true
+
+[grep]
+    lineNumber = true
+
+[alias]
+    s = status --branch --short
+    b = branch
+    ba = branch --all
+    a = add
+    c = commit
+    co = checkout
+    d = diff
+    dc = diff --cached
+    r = remote
+    ru = remote update -p
+    l = log --abbrev-commit --date=iso --graph --pretty=format:'%C(red)%h %C(yellow)%d%C(green)%cd %C(blue)%cn\n%C(reset)%s\n'
+    lb = log --branches --abbrev-commit --date=iso --graph --pretty=format:'%C(red)%h %C(yellow)%d%C(green)%cd %C(blue)%cn\n%C(reset)%s\n'
+    lbr = log --branches --remotes --abbrev-commit --date=iso --graph --pretty=format:'%C(red)%h %C(yellow)%d%C(green)%cd %C(blue)%cn\n%C(reset)%s\n'
+    lr = log --remotes --abbrev-commit --date=iso --graph --pretty=format:'%C(red)%h %C(yellow)%d%C(green)%cd %C(blue)%cn\n%C(reset)%s\n'
+    lv = log --name-status --abbrev-commit --date=iso --graph --pretty=format:'%C(red)%h %C(yellow)%d%C(green)%cd %C(blue)%cn\n%C(reset)%s\n'
+    delete-merged-branches = !git branch --merged | grep -v \\* | xargs -I % git branch -d %
+
+[merge]
+    ff = false
+[pull]
+    ff = only
+[push]
+    default = current
+[fetch]
+    prune = true
