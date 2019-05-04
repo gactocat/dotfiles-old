@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -eu
+
 DOTPATH="$HOME/dotfiles"
 
 if [ ! -e "$DOTPATH" ]; then
