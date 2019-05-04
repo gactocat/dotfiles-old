@@ -17,6 +17,9 @@ fi
 
 cd "$DOTPATH"
 
+scripts/configure.sh
+echo
+
 scripts/deploy.sh
 echo
 
