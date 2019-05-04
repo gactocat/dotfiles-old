@@ -1,5 +1,7 @@
 # dotfiles
 
+[![Build Status](https://travis-ci.com/gactocat/dotfiles.svg?branch=master)](https://travis-ci.com/gactocat/dotfiles)
+
 Exec the following to setup.
 
 ```

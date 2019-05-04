@@ -1,4 +1,5 @@
 language: shell
 script:
-  - bash -c 'shopt -s globstar; shellcheck **/*.{sh,ksh,bash}'
-  - bash -c 'shellcheck -s zsh .zshrc'
+  - bash -c 'shopt -s globstar; shellcheck **/*.sh'
+  - bash -c 'shellcheck -s bash .zshrc'
+
