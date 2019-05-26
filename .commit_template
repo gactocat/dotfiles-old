@@ -1,0 +1,19 @@
+# ==================== Emojis ====================
+# 🎉  :tada: （Initial Commit）
+# 🔖  :bookmark: （Version Tag）
+# ✨  :sparkles: （New Feature）
+# 🐛  :bug: （Bugfix）
+# ♻️  :recycle: (Refactoring)
+# 📚  :books: （Documentation）
+# 🎨  :art: (Accessibility)
+# 🐎  :horse: （Performance）
+# 🔧  :wrench: （Tooling）
+# 🚨  :rotating_light: （Tests）
+# 💩  :hankey: （Deprecation）
+# 🗑️  :wastebasket: （Removal）
+# 🚧  :construction: (Work In Progress)
+
+# ==================== Format ====================
+# :emoji: Subject
+#
+# Commit body...
