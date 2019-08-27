@@ -6,6 +6,10 @@ alias cp='cp -i'
 alias rm='rm -i'
 alias mkdir='mkdir -p'
 
+alias ghq-cd='cd $(ghq root)/$(ghq list | peco)'
+alias ghq-brouse='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
+alias ghq-code='code $(ghq root)/$(ghq list | peco)'
+
 propen() {
     local current_branch_name=$(git symbolic-ref --short HEAD | xargs perl -MURI::Escape -e 'print uri_escape($ARGV[0]);')
     git config --get remote.origin.url | sed -e "s/^.*[:\/]\(.*\/.*\).git$/https:\/\/github.com\/\1\//" | sed -e "s/$/pull\/${current_branch_name}/" | xargs open
