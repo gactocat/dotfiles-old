@@ -7,7 +7,7 @@ alias rm='rm -i'
 alias mkdir='mkdir -p'
 
 alias ghq-cd='cd $(ghq root)/$(ghq list | peco)'
-alias ghq-brouse='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
+alias ghq-browse='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
 alias ghq-code='code $(ghq root)/$(ghq list | peco)'
 
 propen() {
