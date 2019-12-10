@@ -15,6 +15,7 @@
 
 [alias]
     s = status --branch --short
+    sw = switch
     b = branch
     ba = branch --all
     a = add
@@ -24,6 +25,7 @@
     dc = diff --cached
     r = remote
     ru = remote update -p
+    rs = restore
     l = log --abbrev-commit --date=iso --graph --pretty=format:'%C(red)%h %C(yellow)%d%C(green)%cd %C(blue)%cn\n%C(reset)%s\n'
     lb = log --branches --abbrev-commit --date=iso --graph --pretty=format:'%C(red)%h %C(yellow)%d%C(green)%cd %C(blue)%cn\n%C(reset)%s\n'
     lbr = log --branches --remotes --abbrev-commit --date=iso --graph --pretty=format:'%C(red)%h %C(yellow)%d%C(green)%cd %C(blue)%cn\n%C(reset)%s\n'
