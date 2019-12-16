@@ -22,6 +22,7 @@ cask "docker"
 cask "google-japanese-ime"
 cask "intellij-idea"
 cask "iterm2"
+cask "kap"
 cask "karabiner-elements"
 cask "kindle"
 cask "obs"
@@ -37,4 +38,3 @@ mas "Pages", id: 409201541
 mas "Skitch", id: 425955336
 mas "TweetDeck", id: 485812721
 mas "Xcode", id: 497799835
-
