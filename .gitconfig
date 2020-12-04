@@ -14,8 +14,6 @@
     lineNumber = true
 
 [alias]
-    s = status --branch --short
-    sw = switch
     b = branch
     ba = branch --all
     a = add
@@ -23,9 +21,12 @@
     co = checkout
     d = diff
     dc = diff --cached
+    ps = "!git push origin $(git rev-parse --abbrev-ref HEAD)"
+    pl = "!git pull origin $(git rev-parse --abbrev-ref HEAD)"
     r = remote
     ru = remote update -p
     rs = restore
+    s = status --branch --short
     l = log --abbrev-commit --date=iso --graph --pretty=format:'%C(red)%h %C(yellow)%d%C(green)%cd %C(blue)%cn\n%C(reset)%s\n'
     lb = log --branches --abbrev-commit --date=iso --graph --pretty=format:'%C(red)%h %C(yellow)%d%C(green)%cd %C(blue)%cn\n%C(reset)%s\n'
     lbr = log --branches --remotes --abbrev-commit --date=iso --graph --pretty=format:'%C(red)%h %C(yellow)%d%C(green)%cd %C(blue)%cn\n%C(reset)%s\n'
