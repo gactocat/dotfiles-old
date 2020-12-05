@@ -17,7 +17,7 @@ zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "zsh-users/zsh-history-substring-search", defer:3
 
 zplug "mafredri/zsh-async"
-zplug "sindresorhus/pure"
+zplug "romkatv/powerlevel10k", as:theme, depth:1
 
 zplug "zplug/zplug", hook-build:'zplug --self-manage'
 
