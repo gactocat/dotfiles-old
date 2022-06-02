@@ -6,9 +6,9 @@ alias cp='cp -i'
 alias rm='rm -i'
 alias mkdir='mkdir -p'
 
-alias ghqcd='cd $(ghq root)/$(ghq list | peco)'
-alias ghqbrowse='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
-alias ghqcode='code $(ghq root)/$(ghq list | peco)'
+alias gd='cd $(ghq root)/$(ghq list | peco)'
+alias gb='hub browse $(ghq list | peco | cut -d "/" -f 2,3)'
+alias gv='cd $(ghq root)/$(ghq list | peco) && nvim'
 
 propen() {
     local current_branch_name=$(git symbolic-ref --short HEAD | xargs perl -MURI::Escape -e 'print uri_escape($ARGV[0]);')
