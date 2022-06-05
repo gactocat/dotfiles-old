@@ -1,94 +1,101 @@
-require('packer').startup(function()
-    -- packer can manage itself
-    use {
-        'wbthomason/packer.nvim'
-    }
+local install_path = vim.fn.stdpath 'data' .. '/site/pack/packer/start/packer.nvim'
+if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
+    vim.fn.system { 'git', 'clone', 'https://github.com/wbthomason/packer.nvim', install_path }
+    vim.api.nvim_command 'packadd packer.nvim'
+end
 
-    -- color schema
-    use {
-        'ellisonleao/gruvbox.nvim',
-        -- 'overcache/NeoSolarized',
-    }
-
-    -- LSP
-    use {
-        'neovim/nvim-lspconfig',
-        'williamboman/nvim-lsp-installer',
-        'tami5/lspsaga.nvim',
-        'onsails/lspkind-nvim',
-        "ray-x/lsp_signature.nvim",
-    }
-
-    use {
-        'nvim-treesitter/nvim-treesitter',
-        run = ':TSUpdate',
-    }
-
-    -- completion
-    use {
-        'hrsh7th/nvim-cmp',
-        'hrsh7th/cmp-nvim-lsp',
-        'hrsh7th/cmp-buffer',
-        'hrsh7th/cmp-path',
-        'hrsh7th/cmp-cmdline',
-    }
-
-    -- snipet
-    use {
-        'hrsh7th/cmp-vsnip',
-        'hrsh7th/vim-vsnip',
-    }
-
-    use {
-        'kyazdani42/nvim-tree.lua',
-        requires = {
-            'kyazdani42/nvim-web-devicons',
-            opt = true,
-        },
-    }
-
-    -- fuzzy finder
-    use {
-        'nvim-telescope/telescope.nvim',
-        requires = { { 'nvim-lua/plenary.nvim' } }
-    }
-
-    -- status line
-    use {
-        'nvim-lualine/lualine.nvim',
-        requires = {
-            'kyazdani42/nvim-web-devicons',
-            opt = true
+require 'packer'.startup {
+    function(use)
+        -- packer can manage itself
+        use {
+            'wbthomason/packer.nvim'
         }
-    }
 
-    -- terminal integration
-    use {
-        "akinsho/toggleterm.nvim",
-        tag = 'v1.*',
-        config = function()
-            require("toggleterm").setup()
-        end }
+        -- color schema
+        use {
+            'ellisonleao/gruvbox.nvim',
+            -- 'overcache/NeoSolarized',
+        }
 
-    -- git
-    use {
-        'lewis6991/gitsigns.nvim',
-    }
+        -- LSP
+        use {
+            'neovim/nvim-lspconfig',
+            'williamboman/nvim-lsp-installer',
+            'tami5/lspsaga.nvim',
+            'onsails/lspkind-nvim',
+            'ray-x/lsp_signature.nvim',
+        }
 
-    -- test
-    use {
-        "klen/nvim-test",
-        config = function()
-            require('nvim-test').setup()
-        end
-    }
+        use {
+            'nvim-treesitter/nvim-treesitter',
+            run = ':TSUpdate',
+        }
 
-    -- teraform
-    use {
-        'hashivim/vim-terraform',
-    }
-end)
+        -- completion
+        use {
+            'hrsh7th/nvim-cmp',
+            'hrsh7th/cmp-nvim-lsp',
+            'hrsh7th/cmp-buffer',
+            'hrsh7th/cmp-path',
+            'hrsh7th/cmp-cmdline',
+        }
 
+        -- snipet
+        use {
+            'hrsh7th/cmp-vsnip',
+            'hrsh7th/vim-vsnip',
+        }
+
+        use {
+            'kyazdani42/nvim-tree.lua',
+            requires = {
+                'kyazdani42/nvim-web-devicons',
+                opt = true,
+            },
+        }
+
+        -- fuzzy finder
+        use {
+            'nvim-telescope/telescope.nvim',
+            requires = { { 'nvim-lua/plenary.nvim' } }
+        }
+
+        -- status line
+        use {
+            'nvim-lualine/lualine.nvim',
+            requires = {
+                'kyazdani42/nvim-web-devicons',
+                opt = true
+            }
+        }
+
+        -- terminal integration
+        use {
+            'akinsho/toggleterm.nvim',
+            tag = 'v1.*',
+            config = function()
+                require 'toggleterm'.setup()
+            end }
+
+        -- git
+        use {
+            'lewis6991/gitsigns.nvim',
+        }
+
+        -- test
+        use {
+            'klen/nvim-test',
+            config = function()
+                require('nvim-test').setup()
+            end
+        }
+
+        -- teraform
+        use {
+            'hashivim/vim-terraform',
+        }
+    end,
+}
 local opts = { noremap = true, silent = true }
 
 ---------
@@ -109,15 +116,15 @@ local on_attach = function(client, bufnr)
     map(bufnr, 'n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
     map(bufnr, 'n', '<leader>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 
-    map(0, "n", "<leader>rn", "<cmd>Lspsaga rename<cr>", opts)
-    map(0, "n", "<leader>ca", "<cmd>Lspsaga code_action<cr>", opts)
-    map(0, "x", "<leader>ca", ":<c-u>Lspsaga range_code_action<cr>", opts)
-    map(0, "n", "K", "<cmd>Lspsaga hover_doc<cr>", opts)
-    map(0, "n", "<leader>e", "<cmd>Lspsaga show_line_diagnostics<cr>", opts)
-    map(0, "n", "[e", "<cmd>Lspsaga diagnostic_jump_next<cr>", opts)
-    map(0, "n", "]e", "<cmd>Lspsaga diagnostic_jump_prev<cr>", opts)
-    map(0, "n", "<C-u>", "<cmd>lua require 'lspsaga.action'.smart_scroll_with_saga(-1, '<c-u>')<cr>", {})
-    map(0, "n", "<C-d>", "<cmd>lua require 'lspsaga.action'.smart_scroll_with_saga(1, '<c-d>')<cr>", {})
+    map(0, 'n', '<leader>rn', '<cmd>Lspsaga rename<cr>', opts)
+    map(0, 'n', '<leader>ca', '<cmd>Lspsaga code_action<cr>', opts)
+    map(0, 'x', '<leader>ca', ':<c-u>Lspsaga range_code_action<cr>', opts)
+    map(0, 'n', 'K', '<cmd>Lspsaga hover_doc<cr>', opts)
+    map(0, 'n', '<leader>e', '<cmd>Lspsaga show_line_diagnostics<cr>', opts)
+    map(0, 'n', '[e', '<cmd>Lspsaga diagnostic_jump_next<cr>', opts)
+    map(0, 'n', ']e', '<cmd>Lspsaga diagnostic_jump_prev<cr>', opts)
+    map(0, 'n', '<C-u>', '<cmd>lua require "lspsaga.action".smart_scroll_with_saga(-1, "<c-u>")<cr>', {})
+    map(0, 'n', '<C-d>', '<cmd>lua require "lspsaga.action".smart_scroll_with_saga(1, "<c-d>")<cr>', {})
 end
 
 local lsp_installer = require 'nvim-lsp-installer'
@@ -134,14 +141,14 @@ end
 -- treesitter --
 ----------------
 require 'nvim-treesitter.configs'.setup {
-    -- A list of parser names, or "all"
-    ensure_installed = { "c", "lua", "rust" },
+    -- A list of parser names, or 'all'
+    ensure_installed = { 'c', 'lua', 'rust' },
 
     -- Install parsers synchronously (only applied to `ensure_installed`)
     sync_install = false,
 
-    -- List of parsers to ignore installing (for "all")
-    ignore_install = { "javascript" },
+    -- List of parsers to ignore installing (for 'all')
+    ignore_install = { 'javascript' },
 
     highlight = {
         -- `false` will disable the whole extension
@@ -151,7 +158,7 @@ require 'nvim-treesitter.configs'.setup {
         -- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
         -- the name of the parser)
         -- list of language that will be disabled
-        disable = { "c", "rust" },
+        disable = { 'c', 'rust' },
 
         -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
         -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
@@ -164,13 +171,13 @@ require 'nvim-treesitter.configs'.setup {
 ----------------
 -- completion --
 ----------------
-vim.opt.completeopt = "menu,menuone,noselect"
+vim.opt.completeopt = 'menu,menuone,noselect'
 
 local cmp = require 'cmp'
 cmp.setup({
     snippet = {
         expand = function(args)
-            vim.fn["vsnip#anonymous"](args.body)
+            vim.fn['vsnip#anonymous'](args.body)
         end,
     },
     window = {
@@ -255,20 +262,20 @@ vim.api.nvim_set_keymap('n', '<C-w>T', '<cmd>:ToggleTermToggleAll<CR>', opts)
 
 local Terminal = require 'toggleterm.terminal'.Terminal
 local gitui    = Terminal:new({
-    cmd = "gitui",
-    dir = "git_dir",
-    direction = "float",
+    cmd = 'gitui',
+    dir = 'git_dir',
+    direction = 'float',
     float_opts = {
-        border = "double",
+        border = 'double',
     },
     -- function to run on opening the terminal
     on_open = function(term)
-        vim.cmd("startinsert!")
-        vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
+        vim.cmd('startinsert!')
+        vim.api.nvim_buf_set_keymap(term.bufnr, 'n', 'q', '<cmd>close<CR>', { noremap = true, silent = true })
     end,
     -- function to run on closing the terminal
     on_close = function(term)
-        vim.cmd("Closing terminal")
+        vim.cmd('Closing terminal')
     end,
 })
 
@@ -276,7 +283,7 @@ function _gitui_toggle()
     gitui:toggle()
 end
 
-vim.api.nvim_set_keymap("n", "<leader>g", "<cmd>lua _gitui_toggle()<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader>g', '<cmd>lua _gitui_toggle()<CR>', { noremap = true, silent = true })
 
 
 ---------------
@@ -307,41 +314,41 @@ require 'gitsigns'.setup()
 ---------------
 -- telescope --
 ---------------
-vim.api.nvim_set_keymap('n', 'fs', "<cmd>lua require 'telescope.builtin'.find_files()<CR>", opts)
-vim.api.nvim_set_keymap('n', 'fg', "<cmd>lua require 'telescope.builtin'.live_grep()<CR>", opts)
-vim.api.nvim_set_keymap('n', 'fb', "<cmd>lua require 'telescope.builtin'.buffers()<CR>", opts)
-vim.api.nvim_set_keymap('n', 'fh', "<cmd>lua require 'telescope.builtin'.help_tags()<CR>", opts)
+vim.api.nvim_set_keymap('n', 'fs', '<cmd>lua require "telescope.builtin".find_files()<CR>', opts)
+vim.api.nvim_set_keymap('n', 'fg', '<cmd>lua require "telescope.builtin".live_grep()<CR>', opts)
+vim.api.nvim_set_keymap('n', 'fb', '<cmd>lua require "telescope.builtin".buffers()<CR>', opts)
+vim.api.nvim_set_keymap('n', 'fh', '<cmd>lua require "telescope.builtin".help_tags()<CR>', opts)
 
 ----------
 -- test --
 ----------
 
-require('nvim-test').setup {
+require 'nvim-test'.setup {
     run = true, -- run tests (using for debug)
     commands_create = true, -- create commands (TestFile, TestLast, ...)
-    filename_modifier = ":.", -- modify filenames before tests run(:h filename-modifiers)
+    filename_modifier = ':.', -- modify filenames before tests run(:h filename-modifiers)
     silent = false, -- less notifications
-    term = "terminal", -- a terminal to run ("terminal"|"toggleterm")
+    term = 'terminal', -- a terminal to run ('terminal'|'toggleterm')
     termOpts = {
-        direction = "vertical", -- terminal's direction ("horizontal"|"vertical"|"float")
+        direction = 'vertical', -- terminal's direction ('horizontal'|'vertical'|'float')
         width = 96, -- terminal's width (for vertical|float)
         height = 24, -- terminal's height (for horizontal|float)
         go_back = false, -- return focus to original window after executing
-        stopinsert = "auto", -- exit from insert mode (true|false|"auto")
+        stopinsert = 'auto', -- exit from insert mode (true|false|'auto')
         keep_one = true, -- keep only one terminal for testing
     },
     runners = { -- setup tests runners
-        cs = "nvim-test.runners.dotnet",
-        go = "nvim-test.runners.go-test",
-        haskell = "nvim-test.runners.hspec",
-        javacriptreact = "nvim-test.runners.jest",
-        javascript = "nvim-test.runners.jest",
-        lua = "nvim-test.runners.busted",
-        python = "nvim-test.runners.pytest",
-        ruby = "nvim-test.runners.rspec",
-        rust = "nvim-test.runners.cargo-test",
-        typescript = "nvim-test.runners.jest",
-        typescriptreact = "nvim-test.runners.jest",
+        cs = 'nvim-test.runners.dotnet',
+        go = 'nvim-test.runners.go-test',
+        haskell = 'nvim-test.runners.hspec',
+        javacriptreact = 'nvim-test.runners.jest',
+        javascript = 'nvim-test.runners.jest',
+        lua = 'nvim-test.runners.busted',
+        python = 'nvim-test.runners.pytest',
+        ruby = 'nvim-test.runners.rspec',
+        rust = 'nvim-test.runners.cargo-test',
+        typescript = 'nvim-test.runners.jest',
+        typescriptreact = 'nvim-test.runners.jest',
     }
 }
 
