@@ -1,6 +1,8 @@
 # 基本の設定
 autoload -Uz compinit && compinit
 
+export LANG=en_US.UTF-8
+
 # ヒストリーの設定
 HISTFILE=~/.zsh-history
 HISTSIZE=1000000

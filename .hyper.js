@@ -11,10 +11,10 @@ module.exports = {
     updateChannel: 'stable',
 
     // default font size in pixels for all tabs
-    fontSize: 17,
+    fontSize: 19,
 
     // font family with optional fallbacks
-    fontFamily: 'Ricty, "DroidSansMono Nerd Font"',
+    fontFamily: 'Ricty, "Hack Nerd Font Mono"',
 
     // default font weight: 'normal' or 'bold'
     fontWeight: 'normal',
@@ -148,16 +148,17 @@ module.exports = {
   //   `project#1.0.1`
   plugins: [
     "hyper-highlight-active-pane",
-    "hyper-iceberg",
+    // "hyper-iceberg",
     "hyper-opacity",
     "hyper-search",
     "hyper-tabs-enhanced",
     "hyperborder",
     "hyperlinks",
+    //    "hyper-material-theme",
+    //    "hyperterm-cobalt2-theme",
+    //    "hyperterm-material-dark"
     "hypercwd",
-    "hyper-material-theme",
-    "hyperterm-cobalt2-theme",
-    "hyperterm-material-dark"
+    "hyperterm-gruvbox-dark"
   ],
 
   // in development, you can create a directory under
