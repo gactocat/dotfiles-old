@@ -26,6 +26,7 @@ require 'packer'.startup {
             'ray-x/lsp_signature.nvim',
         }
 
+        -- syntax
         use {
             'nvim-treesitter/nvim-treesitter',
             run = ':TSUpdate',
@@ -46,8 +47,19 @@ require 'packer'.startup {
             'hrsh7th/vim-vsnip',
         }
 
+        -- file explorer
         use {
             'kyazdani42/nvim-tree.lua',
+            setup = function()
+                vim.keymap.set('n', 'fe', '<cmd>NvimTreeToggle<CR>', opts)
+                vim.keymap.set('n', 'fr', '<cmd>NvimTreeRefresh<CR>', opts)
+                vim.keymap.set('n', 'fd', '<cmd>NvimTreeFindFile<CR>', opts)
+            end,
+            config = function()
+                require 'nvim-tree'.setup {
+                    open_on_setup = true,
+                }
+            end,
             requires = {
                 'kyazdani42/nvim-web-devicons',
                 opt = true,
@@ -57,12 +69,26 @@ require 'packer'.startup {
         -- fuzzy finder
         use {
             'nvim-telescope/telescope.nvim',
+            setup = function()
+                vim.keymap.set('n', 'fs', '<cmd>Telescope find_files<CR>', opts)
+                vim.keymap.set('n', 'fg', '<cmd>Telescope live_grep<CR>', opts)
+                vim.keymap.set('n', 'fb', '<cmd>Telescope buffers<CR>', opts)
+                vim.keymap.set('n', 'fh', '<cmd>Telescope help_tags<CR>', opts)
+            end,
             requires = { { 'nvim-lua/plenary.nvim' } }
         }
 
         -- status line
         use {
             'nvim-lualine/lualine.nvim',
+            config = function()
+                require 'lualine'.setup {
+                    options = {
+                        theme = 'gruvbox',
+                        disabled_filetypes = { 'NvimTree' } -- disable statusline in file explorer
+                    }
+                }
+            end,
             requires = {
                 'kyazdani42/nvim-web-devicons',
                 opt = true
@@ -75,19 +101,57 @@ require 'packer'.startup {
             tag = 'v1.*',
             config = function()
                 require 'toggleterm'.setup()
-            end }
+            end
+        }
 
         -- git
         use {
             'lewis6991/gitsigns.nvim',
+            config = function()
+                require 'gitsigns'.setup()
+            end
         }
 
         -- test
         use {
             'klen/nvim-test',
+            setup = function()
+                vim.keymap.set('n', '<leader>tn', '<cmd>TestNearest<cr>', { noremap = true, silent = true })
+                vim.keymap.set('n', '<leader>tf', '<cmd>TestFile<cr>', { noremap = true, silent = true })
+                vim.keymap.set('n', '<leader>ts', '<cmd>TestSuite<cr>', { noremap = true, silent = true })
+                vim.keymap.set('n', '<leader>tl', '<cmd>TestLast<cr>', { noremap = true, silent = true })
+                vim.keymap.set('n', '<leader>tv', '<cmd>TestVisit<cr>', { noremap = true, silent = true })
+            end,
             config = function()
-                require('nvim-test').setup()
-            end
+                require 'nvim-test'.setup {
+                    run = true, -- run tests (using for debug)
+                    commands_create = true, -- create commands (TestFile, TestLast, ...)
+                    filename_modifier = ':.', -- modify filenames before tests run(:h filename-modifiers)
+                    silent = false, -- less notifications
+                    term = 'terminal', -- a terminal to run ('terminal'|'toggleterm')
+                    termOpts = {
+                        direction = 'vertical', -- terminal's direction ('horizontal'|'vertical'|'float')
+                        width = 96, -- terminal's width (for vertical|float)
+                        height = 24, -- terminal's height (for horizontal|float)
+                        go_back = false, -- return focus to original window after executing
+                        stopinsert = 'auto', -- exit from insert mode (true|false|'auto')
+                        keep_one = true, -- keep only one terminal for testing
+                    },
+                    runners = { -- setup tests runners
+                        cs = 'nvim-test.runners.dotnet',
+                        go = 'nvim-test.runners.go-test',
+                        haskell = 'nvim-test.runners.hspec',
+                        javacriptreact = 'nvim-test.runners.jest',
+                        javascript = 'nvim-test.runners.jest',
+                        lua = 'nvim-test.runners.busted',
+                        python = 'nvim-test.runners.pytest',
+                        ruby = 'nvim-test.runners.rspec',
+                        rust = 'nvim-test.runners.cargo-test',
+                        typescript = 'nvim-test.runners.jest',
+                        typescriptreact = 'nvim-test.runners.jest',
+                    }
+                }
+            end,
         }
 
         -- teraform
@@ -96,6 +160,7 @@ require 'packer'.startup {
         }
     end,
 }
+
 local opts = { noremap = true, silent = true }
 
 ---------
@@ -283,77 +348,12 @@ function _gitui_toggle()
     gitui:toggle()
 end
 
-vim.api.nvim_set_keymap('n', '<leader>g', '<cmd>lua _gitui_toggle()<CR>', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<C-w>g', '<cmd>lua _gitui_toggle()<CR>', { noremap = true, silent = true })
 
-
----------------
--- nvim-tree --
----------------
-require 'nvim-tree'.setup {
-    open_on_setup = true,
-}
-vim.api.nvim_set_keymap('n', 'fe', '<cmd>:NvimTreeToggle<CR>', opts)
-vim.api.nvim_set_keymap('n', 'fr', '<cmd>:NvimTreeRefresh<CR>', opts)
-vim.api.nvim_set_keymap('n', 'fd', '<cmd>:NvimTreeFindFile<CR>', opts)
-
--------------
--- lualine --
--------------
-require 'lualine'.setup {
-    options = {
-        theme = 'gruvbox',
-        disabled_filetypes = { 'NvimTree' } -- disable statusline in file tree
-    }
-}
-
---------------
--- gitsigns --
---------------
-require 'gitsigns'.setup()
-
----------------
--- telescope --
----------------
-vim.api.nvim_set_keymap('n', 'fs', '<cmd>lua require "telescope.builtin".find_files()<CR>', opts)
-vim.api.nvim_set_keymap('n', 'fg', '<cmd>lua require "telescope.builtin".live_grep()<CR>', opts)
-vim.api.nvim_set_keymap('n', 'fb', '<cmd>lua require "telescope.builtin".buffers()<CR>', opts)
-vim.api.nvim_set_keymap('n', 'fh', '<cmd>lua require "telescope.builtin".help_tags()<CR>', opts)
-
-----------
--- test --
-----------
-
-require 'nvim-test'.setup {
-    run = true, -- run tests (using for debug)
-    commands_create = true, -- create commands (TestFile, TestLast, ...)
-    filename_modifier = ':.', -- modify filenames before tests run(:h filename-modifiers)
-    silent = false, -- less notifications
-    term = 'terminal', -- a terminal to run ('terminal'|'toggleterm')
-    termOpts = {
-        direction = 'vertical', -- terminal's direction ('horizontal'|'vertical'|'float')
-        width = 96, -- terminal's width (for vertical|float)
-        height = 24, -- terminal's height (for horizontal|float)
-        go_back = false, -- return focus to original window after executing
-        stopinsert = 'auto', -- exit from insert mode (true|false|'auto')
-        keep_one = true, -- keep only one terminal for testing
-    },
-    runners = { -- setup tests runners
-        cs = 'nvim-test.runners.dotnet',
-        go = 'nvim-test.runners.go-test',
-        haskell = 'nvim-test.runners.hspec',
-        javacriptreact = 'nvim-test.runners.jest',
-        javascript = 'nvim-test.runners.jest',
-        lua = 'nvim-test.runners.busted',
-        python = 'nvim-test.runners.pytest',
-        ruby = 'nvim-test.runners.rspec',
-        rust = 'nvim-test.runners.cargo-test',
-        typescript = 'nvim-test.runners.jest',
-        typescriptreact = 'nvim-test.runners.jest',
-    }
-}
-
-vim.api.nvim_set_keymap('n', '<leader>tn', '<cmd>TestNearest<CR>', { noremap = true, silent = true }) -- Test nearest test
-vim.api.nvim_set_keymap('n', '<leader>tf', '<cmd>TestFile<CR>', { noremap = true, silent = true }) -- Test file
-vim.api.nvim_set_keymap('n', '<leader>ts', '<cmd>TestSuite<CR>', { noremap = true, silent = true }) -- Test suite
-vim.api.nvim_set_keymap('n', '<leader>tl', '<cmd>TestLast<CR>', { noremap = true, silent = true }) -- Test last test run
-vim.api.nvim_set_keymap('n', '<leader>tv', '<cmd>TestVisit<CR>', { noremap = true, silent = true }) -- Test visit
+vim.api.nvim_create_augroup('PackerCompile', {})
+vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
+    group = 'PackerCompile',
+    pattern = 'plugins.lua',
+    command = 'source <afile> | PackerCompile',
+    once = false,
+})

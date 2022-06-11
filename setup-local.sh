@@ -12,6 +12,8 @@ echo '
 .config/nvim/lua/keymaps.lua
 .config/nvim/lua/plugins.lua
 
+.config/gitui/key_bindings.ron
+
 .zshrc
 .zsh/.zshrc.alias
 .zsh/.zshrc.base
